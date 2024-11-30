@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Coding Quizzes</string>
+    <string name="reg_title">Welcome!</string>
+    <string name="log_title">Welcome back!</string>
+    <string name="email">Enter your email</string>
+    <string name="password">Enter your password</string>
+    <string name="reg_btn">Register</string>
+    <string name="log_btn">Log In</string>
+    <string name="reg_question">Already have an account?</string>
+    <string name="reg_link"><u>Log in</u></string>
+    <string name="log_question">Don\'t Have an Account?</string>
+    <string name="log_link"><u>Register</u></string>
 </resources>
