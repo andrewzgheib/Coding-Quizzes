@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Coding Quizzes</string>
     <string name="start_quiz_btn">Start</string>
+    <string name="beginner_btn">Beginner</string>
+    <string name="intermediate_btn">Intermediate</string>
+    <string name="pick_your_difficulty">Pick Your Difficulty</string>
 </resources>

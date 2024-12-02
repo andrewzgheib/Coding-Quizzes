@@ -1,5 +1,6 @@
 package com.example.codingquizzes.quizzes.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,7 @@ import com.example.codingquizzes.R
 import com.example.codingquizzes.quizzes.ui.adapter.QuizzesAdapter
 import com.example.codingquizzes.quizzes.ui.viewmodel.QuizListViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ButtonClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var quizzesAdapter: QuizzesAdapter
     private lateinit var viewModel: QuizListViewModel
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_quizzes)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        quizzesAdapter = QuizzesAdapter(emptyList())
+        quizzesAdapter = QuizzesAdapter(emptyList(), this)
         recyclerView.adapter = quizzesAdapter
 
         viewModel = ViewModelProvider(this)[QuizListViewModel::class.java]
@@ -42,5 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.insertAllQuizzes()
         viewModel.refreshQuizzes()
+
+
+    }
+
+    override fun itemClicked() {
+        val intent = Intent(this, DifficultyLevelActivity::class.java)
+        startActivity(intent)
     }
 }

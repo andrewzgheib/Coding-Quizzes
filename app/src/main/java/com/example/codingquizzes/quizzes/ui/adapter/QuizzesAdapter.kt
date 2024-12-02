@@ -3,12 +3,18 @@ package com.example.codingquizzes.quizzes.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.codingquizzes.R
 import com.example.codingquizzes.quizzes.data.model.Quiz
+import com.example.codingquizzes.quizzes.ui.view.ButtonClickListener
 
-class QuizzesAdapter(private var quizList: List<Quiz>) : RecyclerView.Adapter<QuizzesAdapter.QuizzesViewHolder>() {
+
+class QuizzesAdapter(
+    private var quizList: List<Quiz>,
+    private val itemClickListener: ButtonClickListener
+) : RecyclerView.Adapter<QuizzesAdapter.QuizzesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizzesViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -25,6 +31,10 @@ class QuizzesAdapter(private var quizList: List<Quiz>) : RecyclerView.Adapter<Qu
         holder.quizTitle.text = quiz.title
         holder.quizDescription.text = quiz.description
         holder.quizPrerequisite.text = quiz.prerequisite
+
+        holder.startButton.setOnClickListener {
+            itemClickListener.itemClicked()
+        }
     }
 
     fun updateQuizzes(newQuizzes: List<Quiz>) {
@@ -33,9 +43,11 @@ class QuizzesAdapter(private var quizList: List<Quiz>) : RecyclerView.Adapter<Qu
         notifyItemRangeInserted(previousSize, newQuizzes.size)
     }
 
-    class QuizzesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class QuizzesViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         val quizTitle: TextView = itemView.findViewById(R.id.quiz_title)
         val quizDescription: TextView = itemView.findViewById(R.id.quiz_description)
         val quizPrerequisite: TextView = itemView.findViewById(R.id.prerequisite)
+        val startButton: Button = itemView.findViewById(R.id.start_btn)
     }
 }
