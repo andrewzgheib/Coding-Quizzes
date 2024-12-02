@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,7 +22,7 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/reg_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -44,8 +43,23 @@
         app:layout_constraintWidth_max="488dp"
         tools:ignore="Autofill" />
 
+    <TextView
+        android:id="@+id/reg_email_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reg_title"
+        app:layout_constraintBottom_toTopOf="@id/reg_email" />
+
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/reg_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -59,10 +73,25 @@
         android:minHeight="48dp"
         android:textColorHint="#83FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/email"
-        app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="@+id/reg_email"
+        app:layout_constraintStart_toStartOf="@+id/reg_email"
+        app:layout_constraintTop_toBottomOf="@+id/reg_email"
         app:layout_constraintWidth_max="488dp" />
+
+    <TextView
+        android:id="@+id/reg_password_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="6dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/reg_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reg_title" />
 
     <Button
         android:id="@+id/reg_btn"
@@ -75,9 +104,9 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:cornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/reg_password"
+        app:layout_constraintStart_toStartOf="@+id/reg_password"
+        app:layout_constraintTop_toBottomOf="@+id/reg_password"
         app:layout_constraintWidth_max="200dp"/>
 
     <LinearLayout
@@ -91,18 +120,19 @@
         app:layout_constraintTop_toBottomOf="@id/reg_btn">
 
         <TextView
+            android:id="@+id/reg_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reg_question"
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/reg_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@string/reg_link"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"/>
-
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
