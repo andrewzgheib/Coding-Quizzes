@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.codingquizzes.R
+import com.example.codingquizzes.quizzes.data.model.Quiz
 import com.example.codingquizzes.quizzes.ui.adapter.QuizzesAdapter
 import com.example.codingquizzes.quizzes.ui.viewmodel.QuizListViewModel
 
@@ -35,20 +36,20 @@ class MainActivity : AppCompatActivity(), ButtonClickListener {
         quizzesAdapter = QuizzesAdapter(emptyList(), this)
         recyclerView.adapter = quizzesAdapter
 
-        viewModel = ViewModelProvider(this)[QuizListViewModel::class.java]
+       viewModel = ViewModelProvider(this)[QuizListViewModel::class.java]
 
         viewModel.allQuizzes.observe(this) { quizzes ->
             quizzesAdapter.updateQuizzes(quizzes)
         }
-
-        viewModel.insertAllQuizzes()
-        viewModel.refreshQuizzes()
-
-
+        viewModel.fetchAndInsertQuizzes()
+       // viewModel.insertAllQuizzes()
+      //  viewModel.refreshQuizzes()
     }
 
-    override fun itemClicked() {
-        val intent = Intent(this, DifficultyLevelActivity::class.java)
+    override fun itemClicked(quiz: Quiz) {
+        val intent = Intent(this, DifficultyLevelActivity::class.java).apply {
+            putExtra("QUIZ_ID", quiz.id)
+        }
         startActivity(intent)
     }
 }

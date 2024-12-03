@@ -4,4 +4,5 @@
     <string name="beginner_btn">Beginner</string>
     <string name="intermediate_btn">Intermediate</string>
     <string name="pick_your_difficulty">Pick Your Difficulty</string>
+    <string name="submit">Submit</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.codingquizzes.quizzes.data.local
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 
 object DatabaseProvider {
@@ -9,14 +10,28 @@ object DatabaseProvider {
 
     fun getDatabase(context: Context): QuizDatabase {
         return db_instance ?: synchronized(this) {
-            val instance = Room.databaseBuilder(
+            db_instance ?: createDatabase(context).also { db_instance = it }
+        }
+    }
+
+    private fun createDatabase(context: Context): QuizDatabase {
+        return try {
+            Room.databaseBuilder(
+                context.applicationContext,
+                QuizDatabase::class.java,
+                "quiz_database"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+        } catch (e: Exception) {
+            Log.e("DatabaseProvider", "Error creating database", e)
+
+            context.deleteDatabase("quiz_database")
+            Room.databaseBuilder(
                 context.applicationContext,
                 QuizDatabase::class.java,
                 "quiz_database"
             ).build()
-
-            db_instance = instance
-            instance
         }
     }
 }

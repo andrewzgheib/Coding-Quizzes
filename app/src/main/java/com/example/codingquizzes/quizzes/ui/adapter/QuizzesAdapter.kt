@@ -10,7 +10,6 @@ import com.example.codingquizzes.R
 import com.example.codingquizzes.quizzes.data.model.Quiz
 import com.example.codingquizzes.quizzes.ui.view.ButtonClickListener
 
-
 class QuizzesAdapter(
     private var quizList: List<Quiz>,
     private val itemClickListener: ButtonClickListener
@@ -33,7 +32,7 @@ class QuizzesAdapter(
         holder.quizPrerequisite.text = quiz.prerequisite
 
         holder.startButton.setOnClickListener {
-            itemClickListener.itemClicked()
+            itemClickListener.itemClicked(quiz)
         }
     }
 
@@ -43,8 +42,7 @@ class QuizzesAdapter(
         notifyItemRangeInserted(previousSize, newQuizzes.size)
     }
 
-    class QuizzesViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    class QuizzesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val quizTitle: TextView = itemView.findViewById(R.id.quiz_title)
         val quizDescription: TextView = itemView.findViewById(R.id.quiz_description)
         val quizPrerequisite: TextView = itemView.findViewById(R.id.prerequisite)
