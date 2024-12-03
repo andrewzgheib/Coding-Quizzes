@@ -10,4 +10,8 @@
     <string name="reg_link"><u>Log in</u></string>
     <string name="login_question">Don\'t Have an Account?</string>
     <string name="login_link"><u>Register</u></string>
+    <string name="profile_title">Edit Profile</string>
+    <string name="profile_btn">Save Changes</string>
+    <string name="profile_name">Enter your name</string>
+    <string name="profile_username">Enter your username</string>
 </resources>

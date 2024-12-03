@@ -1,7 +1,9 @@
-package com.example.codingquizzes
+package com.example.codingquizzes.ui.view.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -11,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.codingquizzes.R
+import com.example.codingquizzes.ui.view.MainActivity
+import com.example.codingquizzes.ui.vm.LoginViewModel
 
 class LoginActivity: AppCompatActivity() {
 
@@ -53,6 +58,10 @@ class LoginActivity: AppCompatActivity() {
             if (error_message != null) {
                 login_error.text = error_message
                 login_error.visibility = View.VISIBLE
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    login_error.visibility = View.GONE
+                }, 2000)
             } else {
                 login_error.visibility = View.GONE
             }

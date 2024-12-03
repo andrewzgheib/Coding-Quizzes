@@ -1,4 +1,4 @@
-package com.example.codingquizzes
+package com.example.codingquizzes.ui.vm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

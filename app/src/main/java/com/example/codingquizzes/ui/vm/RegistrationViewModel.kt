@@ -1,4 +1,4 @@
-package com.example.codingquizzes
+package com.example.codingquizzes.ui.vm
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
