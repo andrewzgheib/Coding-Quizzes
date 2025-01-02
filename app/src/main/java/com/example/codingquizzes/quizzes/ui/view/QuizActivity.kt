@@ -107,7 +107,6 @@ class QuizActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.insertAllQuestions(quizId, level)
         viewModel.getQuestions(quizId, level)
 
         title = findViewById(R.id.score_text_view)

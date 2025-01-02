@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.codingquizzes.quizzes.data.local.DatabaseProvider
-import com.example.codingquizzes.quizzes.data.local.DummyQuestionData
 import com.example.codingquizzes.quizzes.data.model.Question
 import com.example.codingquizzes.quizzes.data.repository.QuestionRepository
 import kotlinx.coroutines.launch
@@ -28,10 +27,5 @@ class QuestionViewModel(application: Application) : AndroidViewModel(application
                 _allQuestions.value = questionList
             }
         }
-    }
-
-    fun insertAllQuestions(quizId: Int, level: String) = viewModelScope.launch {
-        val newQuestions = DummyQuestionData.generateQuestions(quizId, level)
-        repository.insertAll(newQuestions)
     }
 }
