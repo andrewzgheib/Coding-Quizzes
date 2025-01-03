@@ -31,6 +31,14 @@ class RegistrationViewModel : ViewModel() {
             return
         }
 
+        if (!password.contains(Regex("[A-Z]")) ||
+            !password.contains(Regex("[a-z]")) ||
+            !password.contains(Regex("[0-9]"))) {
+
+            reg_password_error.value = "Password must be alphanumerical"
+            return
+        }
+
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -44,6 +52,7 @@ class RegistrationViewModel : ViewModel() {
                 }
             }
     }
+
     private fun isValidEmail(email: CharSequence?): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

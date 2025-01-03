@@ -23,7 +23,7 @@ class LoginViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     login_success.value = true
                 } else {
-                    error_message.value = "Login failed"
+                    error_message.value = "Wrong email or password"
                 }
             }
     }
