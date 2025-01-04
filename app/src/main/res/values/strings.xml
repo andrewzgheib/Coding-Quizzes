@@ -14,4 +14,5 @@
     <string name="profile_btn">Save Changes</string>
     <string name="profile_name">Enter your name</string>
     <string name="profile_username">Enter your username</string>
+    <string name="stay_login_question">Stay logged in?</string>
 </resources>

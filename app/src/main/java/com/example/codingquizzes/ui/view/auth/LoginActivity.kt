@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.codingquizzes.R
+import com.example.codingquizzes.ui.SaveSharedPreference
 import com.example.codingquizzes.ui.view.MainActivity
 import com.example.codingquizzes.ui.vm.LoginViewModel
 
@@ -24,6 +26,7 @@ class LoginActivity: AppCompatActivity() {
     private lateinit var login_btn: Button
     private lateinit var login_link: TextView
     private lateinit var login_error: TextView
+    private lateinit var login_chkbx: CheckBox
 
     private lateinit var loginVM: LoginViewModel
 
@@ -38,6 +41,13 @@ class LoginActivity: AppCompatActivity() {
             insets
         }
 
+        if (SaveSharedPreference.isStayLoggedIn(this)) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
         loginVM = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         login_email = findViewById(R.id.login_email)
@@ -45,6 +55,7 @@ class LoginActivity: AppCompatActivity() {
         login_btn = findViewById(R.id.login_btn)
         login_link = findViewById(R.id.login_link)
         login_error = findViewById(R.id.login_error)
+        login_chkbx = findViewById(R.id.login_chkbx)
 
         loginVM.login_success.observe(this) { isSuccess ->
             if (isSuccess) {
@@ -70,6 +81,12 @@ class LoginActivity: AppCompatActivity() {
         login_btn.setOnClickListener {
             val email = login_email.text.toString().trim()
             val password = login_password.text.toString().trim()
+
+            if (login_chkbx.isChecked) {
+                SaveSharedPreference.setStayLoggedIn(this, true)
+            } else {
+                SaveSharedPreference.setStayLoggedIn(this, false)
+            }
 
             loginVM.login(email, password)
         }

@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.codingquizzes.R
+import com.example.codingquizzes.ui.SaveSharedPreference
 import com.example.codingquizzes.ui.view.MainActivity
 import com.example.codingquizzes.ui.vm.RegistrationViewModel
 
@@ -37,6 +38,13 @@ class RegistrationActivity: AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        if (SaveSharedPreference.isStayLoggedIn(this)) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
         }
 
         registerVM = ViewModelProvider(this).get(RegistrationViewModel::class.java)

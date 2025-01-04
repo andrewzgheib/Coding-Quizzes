@@ -53,6 +53,7 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.preference.ktx)
     kapt(libs.androidx.room.compiler)
 
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
