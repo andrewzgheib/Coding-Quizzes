@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.codingquizzes.R
 import com.example.codingquizzes.quizzes.data.model.Quiz
 
-class QuizzesAdapter : ListAdapter<Quiz, QuizzesAdapter.QuizzesViewHolder>(QuizDiffCallback()) {
+class QuizzesSection5Adapter : ListAdapter<Quiz, QuizzesSection5Adapter.QuizzesViewHolder>(QuizDiffCallback()) {
 
     inner class QuizzesViewHolder(itemView: View) : ViewHolder(itemView) {
         val quizTitle: TextView = itemView.findViewById(R.id.quiz_title)
-        val categoryIcon: ImageView = itemView.findViewById(R.id.categoryIcon)
+        val categoryIcon: ImageView = itemView.findViewById(R.id.categoryIcon) // Reference to ImageView
     }
 
     class QuizDiffCallback : DiffUtil.ItemCallback<Quiz>() {
@@ -36,11 +36,7 @@ class QuizzesAdapter : ListAdapter<Quiz, QuizzesAdapter.QuizzesViewHolder>(QuizD
     override fun onBindViewHolder(holder: QuizzesViewHolder, position: Int) {
         val quiz = getItem(position)
 
-        holder.quizTitle.text = if (quiz.category.equals("css", ignoreCase = true)) {
-            quiz.category?.uppercase()
-        } else {
-            quiz.category
-        }
+        holder.quizTitle.text = quiz.category
 
         val iconResId = getCategoryIcon(quiz.category)
         holder.categoryIcon.setImageResource(iconResId)
@@ -48,11 +44,10 @@ class QuizzesAdapter : ListAdapter<Quiz, QuizzesAdapter.QuizzesViewHolder>(QuizD
 
     private fun getCategoryIcon(category: String?): Int {
         return when (category?.lowercase()) {
-            "html" -> R.drawable.ic_html
-            "css" -> R.drawable.ic_css
-            "angular" -> R.drawable.ic_angular
-            "react"-> R.drawable.ic_react
-            "javascript"-> R.drawable.ic_javascript
+            "c" -> R.drawable.ic_c
+            "java" -> R.drawable.ic_java
+            "swift" -> R.drawable.ic_swift
+            "python" -> R.drawable.ic_python
             else -> R.drawable.ic_noimage
         }
     }

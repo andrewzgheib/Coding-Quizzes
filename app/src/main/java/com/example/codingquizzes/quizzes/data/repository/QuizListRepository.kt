@@ -1,53 +1,37 @@
-/*
 package com.example.codingquizzes.quizzes.data.repository
 
-import androidx.lifecycle.LiveData
-import com.example.codingquizzes.quizzes.data.local.QuizListDao
-import com.example.codingquizzes.quizzes.data.model.Quiz
-
-class QuizListRepository(private val quizListDao: QuizListDao) {
-    fun getAllQuizzes(): LiveData<List<Quiz>> = quizListDao.getQuizzes()
-
- */
-/*   suspend fun insert(quiz: Quiz){
-        quizListDao.insert(quiz)
-    }*//*
-
-
-    suspend fun insertAll(quizList: List<Quiz>){
-        quizListDao.insertAll(quizList)
-    }
-
-*/
-/*    suspend fun update(quiz: Quiz){
-        quizListDao.update(quiz.id, quiz.title, quiz.description, quiz.prerequisite)
-    }
-
-    suspend fun delete(quiz: Quiz){
-        quizListDao.delete(quiz)
-    }*//*
-
-}*/
-package com.example.codingquizzes.quizzes.data.repository
-
-import com.example.codingquizzes.quizzes.data.api.RetrofitInstance
-import com.example.codingquizzes.quizzes.data.local.QuizListDao
+import com.example.codingquizzes.quizzes.data.api.QuizApiService
+import com.example.codingquizzes.quizzes.data.api.Resource
 import com.example.codingquizzes.quizzes.data.model.Quiz
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-class QuizListRepository(private val quizListDao: QuizListDao) {
+class QuizListRepository(
+    private val apiService: QuizApiService
+) {
+    fun getQuizzes(): Flow<Resource<List<Quiz>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val networkQuizzes = apiService.getQuizzes()
 
-    fun getAllQuizzes() = quizListDao.getQuizzes()
+            val excludedCategories = listOf(
+                "bash", "blockchain", "vuejs", "laravel", "kubernetes", "ruby",
+                "devops", "openshift", "terraform", "cpanel", "ubuntu",
+                "nodejs", "wordpress", "next.js", "apache kafka", "undefined", "django"
+            )
 
-    suspend fun insertAll(quizList: List<Quiz>) {
-        quizListDao.insertAll(quizList)
-    }
+            val filteredQuizzes = networkQuizzes.filter { quiz ->
+                val category = quiz.category?.lowercase() ?: ""
+                !excludedCategories.contains(category)
+            }
 
-    suspend fun fetchAndInsertQuizzes() {
-        withContext(Dispatchers.IO) {
-            val quizzes = RetrofitInstance.api.fetchQuizzes()
-            quizListDao.insertAll(quizzes)
+            emit(Resource.Success(filteredQuizzes))
+        } catch (e: Exception) {
+            emit(Resource.Error("Failed to fetch quizzes: ${e.message}"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
+        .catch { e -> emit(Resource.Error("Unexpected error: ${e.message}")) }
 }

@@ -4,6 +4,6 @@ import com.example.codingquizzes.quizzes.data.model.Quiz
 import retrofit2.http.GET
 
 interface QuizApiService {
-    @GET("quizzes/quizzes")
-    suspend fun fetchQuizzes(): List<Quiz>
+    @GET("api/v1/tags")
+    suspend fun getQuizzes(): List<Quiz>
 }

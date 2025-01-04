@@ -5,4 +5,12 @@
     <string name="intermediate_btn">Intermediate</string>
     <string name="pick_your_difficulty">Pick Your Difficulty</string>
     <string name="submit">Submit</string>
+    <string name="error_message">failed to fetch data</string>
+    <string name="frontend_section">FRONTEND</string>
+    <string name="backend_section">BACKEND</string>
+    <string name="sql_section">SQL</string>
+    <string name="cicd_section">CI/CD</string>
+    <string name="languages_section">LANGUAGES</string>
+    <string name="others_section">OTHERS</string>
+
 </resources>
