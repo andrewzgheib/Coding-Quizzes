@@ -17,21 +17,30 @@ class DifficultyLevelActivity : AppCompatActivity() {
 
         val beginner: Button = findViewById(R.id.beginner_btn)
         val intermediate: Button = findViewById(R.id.intermediate_btn)
+        val advanced: Button = findViewById(R.id.advanced_btn)
 
-        val quizId = intent.getIntExtra("QUIZ_ID", 0)
+        val quizCategory = intent.getStringExtra("QUIZ_CATEGORY")
 
         beginner.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java).apply {
-                putExtra("DIFFICULTY_LEVEL", "beginner")
-                putExtra("QUIZ_ID", quizId)
+                putExtra("DIFFICULTY_LEVEL", "easy")
+                putExtra("QUIZ_CATEGORY", quizCategory)
             }
             startActivity(intent)
         }
 
         intermediate.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java).apply {
-                putExtra("DIFFICULTY_LEVEL", "intermediate")
-                putExtra("QUIZ_ID", quizId)
+                putExtra("DIFFICULTY_LEVEL", "medium")
+                putExtra("QUIZ_CATEGORY", quizCategory)
+            }
+            startActivity(intent)
+        }
+
+        advanced.setOnClickListener {
+            val intent = Intent(this, QuizActivity::class.java).apply {
+                putExtra("DIFFICULTY_LEVEL", "medium")
+                putExtra("QUIZ_CATEGORY", quizCategory)
             }
             startActivity(intent)
         }

@@ -44,7 +44,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="3">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/beginner_btn"
@@ -68,6 +68,18 @@
                     android:minWidth="74dp"
                     android:minHeight="48dp"
                     android:text="@string/intermediate_btn"
+                    android:textColor="@color/white"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/advanced_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_radius_fuchsia_bg"
+                    android:minWidth="74dp"
+                    android:minHeight="48dp"
+                    android:text="@string/advanced_btn"
                     android:textColor="@color/white" />
 
             </LinearLayout>
