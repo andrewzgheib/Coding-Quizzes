@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(), ButtonClickListener {
 
     override fun itemClicked(quiz: Quiz) {
         val intent = Intent(this, DifficultyLevelActivity::class.java).apply {
-            putExtra("QUIZ_ID", quiz.id)
+            putExtra("QUIZ_CATEGORY", quiz.category)
         }
         startActivity(intent)
     }
