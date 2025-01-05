@@ -1,5 +1,6 @@
 package com.example.codingquizzes.quizzes.ui.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,25 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.codingquizzes.R
 import com.example.codingquizzes.quizzes.data.model.Quiz
+import com.example.codingquizzes.quizzes.ui.view.DifficultyLevelActivity
 
 class QuizzesAdapter : ListAdapter<Quiz, QuizzesAdapter.QuizzesViewHolder>(QuizDiffCallback()) {
 
     inner class QuizzesViewHolder(itemView: View) : ViewHolder(itemView) {
         val quizTitle: TextView = itemView.findViewById(R.id.quiz_title)
         val categoryIcon: ImageView = itemView.findViewById(R.id.categoryIcon)
+
+        init {
+            itemView.setOnClickListener {
+                val quiz = getItem(adapterPosition)
+                val context = itemView.context
+
+                val intent = Intent(context, DifficultyLevelActivity::class.java).apply {
+                    putExtra("QUIZ_CATEGORY", quiz.category)
+                }
+                context.startActivity(intent)
+            }
+        }
     }
 
     class QuizDiffCallback : DiffUtil.ItemCallback<Quiz>() {
@@ -44,6 +58,7 @@ class QuizzesAdapter : ListAdapter<Quiz, QuizzesAdapter.QuizzesViewHolder>(QuizD
 
         val iconResId = getCategoryIcon(quiz.category)
         holder.categoryIcon.setImageResource(iconResId)
+
     }
 
     private fun getCategoryIcon(category: String?): Int {
@@ -53,6 +68,19 @@ class QuizzesAdapter : ListAdapter<Quiz, QuizzesAdapter.QuizzesViewHolder>(QuizD
             "angular" -> R.drawable.ic_angular
             "react"-> R.drawable.ic_react
             "javascript"-> R.drawable.ic_javascript
+            ".net" -> R.drawable.ic_dotnet
+            "php" -> R.drawable.ic_php
+            "postgres" -> R.drawable.ic_postgresql
+            "mysql" -> R.drawable.ic_mysql
+            "docker" -> R.drawable.ic_docker
+            "aws" -> R.drawable.ic_aws
+            "git" -> R.drawable.ic_git
+            "c" -> R.drawable.ic_c
+            "java" -> R.drawable.ic_java
+            "swift" -> R.drawable.ic_swift
+            "python" -> R.drawable.ic_python
+            "linux" -> R.drawable.ic_linux
+            "ai" -> R.drawable.ic_ai
             else -> R.drawable.ic_noimage
         }
     }

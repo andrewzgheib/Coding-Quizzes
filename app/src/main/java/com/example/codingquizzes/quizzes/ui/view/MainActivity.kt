@@ -18,22 +18,17 @@ import com.example.codingquizzes.quizzes.data.api.Resource.Loading
 import com.example.codingquizzes.quizzes.data.api.Resource.Success
 import com.example.codingquizzes.quizzes.data.model.Quiz
 import com.example.codingquizzes.quizzes.ui.adapter.QuizzesAdapter
-import com.example.codingquizzes.quizzes.ui.adapter.QuizzesSection2Adapter
-import com.example.codingquizzes.quizzes.ui.adapter.QuizzesSection3Adapter
-import com.example.codingquizzes.quizzes.ui.adapter.QuizzesSection4Adapter
-import com.example.codingquizzes.quizzes.ui.adapter.QuizzesSection5Adapter
-import com.example.codingquizzes.quizzes.ui.adapter.QuizzesSection6Adapter
 import com.example.codingquizzes.quizzes.ui.viewmodel.QuizListViewModel
 
 class MainActivity : AppCompatActivity(), ButtonClickListener {
     private lateinit var quizzesAdapter: QuizzesAdapter
     private lateinit var viewModel: QuizListViewModel
     private lateinit var progressBar: ProgressBar
-    private lateinit var quizzesSection2Adapter: QuizzesSection2Adapter
-    private lateinit var quizzesSection3Adapter: QuizzesSection3Adapter
-    private lateinit var quizzesSection4Adapter: QuizzesSection4Adapter
-    private lateinit var quizzesSection5Adapter: QuizzesSection5Adapter
-    private lateinit var quizzesSection6Adapter: QuizzesSection6Adapter
+    private lateinit var quizzesSection2Adapter: QuizzesAdapter
+    private lateinit var quizzesSection3Adapter: QuizzesAdapter
+    private lateinit var quizzesSection4Adapter: QuizzesAdapter
+    private lateinit var quizzesSection5Adapter: QuizzesAdapter
+    private lateinit var quizzesSection6Adapter: QuizzesAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,11 +54,11 @@ class MainActivity : AppCompatActivity(), ButtonClickListener {
         setupViewModel()
 
         quizzesAdapter = QuizzesAdapter()
-        quizzesSection2Adapter = QuizzesSection2Adapter()
-        quizzesSection3Adapter = QuizzesSection3Adapter()
-        quizzesSection4Adapter = QuizzesSection4Adapter()
-        quizzesSection5Adapter = QuizzesSection5Adapter()
-        quizzesSection6Adapter = QuizzesSection6Adapter()
+        quizzesSection2Adapter = QuizzesAdapter()
+        quizzesSection3Adapter = QuizzesAdapter()
+        quizzesSection4Adapter = QuizzesAdapter()
+        quizzesSection5Adapter = QuizzesAdapter()
+        quizzesSection6Adapter = QuizzesAdapter()
 
         setupRecyclerView(recyclerView, quizzesAdapter)
         setupRecyclerView(recyclerViewSection2, quizzesSection2Adapter)
