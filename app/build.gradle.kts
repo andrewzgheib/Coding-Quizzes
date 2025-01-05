@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -10,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.codingquizzes"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 33
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -37,6 +38,8 @@ android {
 }
 
 dependencies {
+    val fragment_version = "1.8.5"
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -56,6 +59,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("androidx.work:work-runtime-ktx:2.7.0")
+
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

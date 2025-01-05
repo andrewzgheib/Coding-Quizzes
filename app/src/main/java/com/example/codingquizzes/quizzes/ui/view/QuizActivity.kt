@@ -1,161 +1,124 @@
 package com.example.codingquizzes.quizzes.ui.view
 
-/*
-class QuizActivity : AppCompatActivity() {
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var questionsAdapter: QuestionsAdapter
-    private lateinit var viewModel: QuestionViewModel
-    private lateinit var nextButton: Button
-    private lateinit var title: TextView
-    private var quizId: Int = 0
-    private var level: String = "beginner"
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_quiz)
-
-        quizId = intent.getIntExtra("QUIZ_ID", 0)
-        level = intent.getStringExtra("DIFFICULTY_LEVEL") ?: "beginner"
-
-        recyclerView = findViewById(R.id.recycler_view_questions)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        questionsAdapter = QuestionsAdapter(emptyList())
-        recyclerView.adapter = questionsAdapter
-
-        viewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
-
-        viewModel.allQuestions.observe(this) { questions ->
-            if (questions.isNotEmpty()) {
-                questionsAdapter.updateQuestions(questions)
-            }
-        }
-
-        viewModel.insertAllQuestions(quizId, level)
-        viewModel.getQuestions(quizId, level)
-
-        title = findViewById(R.id.score_text_view)
-
-        nextButton = findViewById(R.id.next_button)
-        nextButton.setOnClickListener {
-            val userAnswers = questionsAdapter.getUserAnswers()
-            val correctAnswers =
-                viewModel.allQuestions.value?.associate { it.id to it.correctAnswer }
-
-            if (correctAnswers != null) {
-                var score = 0
-                userAnswers.forEach { (questionId, userAnswer) ->
-                    if (correctAnswers[questionId] == userAnswer) {
-                        score++
-                    }
-                }
-                val totalQuestions = correctAnswers.size
-                title.text = "Score: $score/$totalQuestions"
-            } else {
-                title.text = "No questions loaded!"
-            }
-        }
-    }
-}*/
 import android.os.Bundle
-import android.os.CountDownTimer
+import android.view.View
 import android.widget.Button
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.codingquizzes.R
-import com.example.codingquizzes.quizzes.ui.adapter.QuestionsAdapter
+import com.example.codingquizzes.quizzes.data.api.Resource
+import com.example.codingquizzes.quizzes.data.model.Question
+import com.example.codingquizzes.quizzes.ui.adapter.QuestionSelectorAdapter
+import com.example.codingquizzes.quizzes.ui.adapter.QuizPagerAdapter
 import com.example.codingquizzes.quizzes.ui.viewmodel.QuestionViewModel
 
 class QuizActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var questionsAdapter: QuestionsAdapter
+    private lateinit var viewPager: ViewPager2
+    private lateinit var progressBar: ProgressBar
     private lateinit var viewModel: QuestionViewModel
+    private lateinit var quizPagerAdapter: QuizPagerAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var questionSelectorAdapter: QuestionSelectorAdapter
+    private lateinit var previousButton: Button
     private lateinit var nextButton: Button
-    private lateinit var title: TextView
-    private lateinit var timerTextView: TextView
-    private var quizId: Int = 0
-    private var level: String = "beginner"
-    private var countDownTimer: CountDownTimer? = null
-    private val quizDuration = 60_000L
+    private var currentPosition = 0
+    private var questions: List<Question> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_quiz)
 
-        quizId = intent.getIntExtra("QUIZ_ID", 0)
-        level = intent.getStringExtra("DIFFICULTY_LEVEL") ?: "beginner"
+        viewPager = findViewById(R.id.view_pager)
+        progressBar = findViewById(R.id.progress_bar_question)
+        recyclerView = findViewById(R.id.question_selector_recycler_view)
+        previousButton = findViewById(R.id.previous_btn_question)
+        nextButton = findViewById(R.id.next_btn_question)
 
-        recyclerView = findViewById(R.id.recycler_view_questions)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        viewPager.isUserInputEnabled = false
 
-        questionsAdapter = QuestionsAdapter(emptyList())
-        recyclerView.adapter = questionsAdapter
+        val quizCategory = intent.getStringExtra("QUIZ_CATEGORY") ?: "General Knowledge"
+        val difficultyLevel = intent.getStringExtra("DIFFICULTY_LEVEL") ?: "easy"
 
-        viewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
+        setupViewModel()
+        observeData()
 
-        viewModel.allQuestions.observe(this) { questions ->
-            if (questions.isNotEmpty()) {
-                questionsAdapter.updateQuestions(questions)
-            }
+        viewModel.fetchQuestions(difficultyLevel.lowercase(), quizCategory)
+
+        previousButton.setOnClickListener {
+            navigateToPreviousFragment()
         }
 
-        viewModel.getQuestions(quizId, level)
-
-        title = findViewById(R.id.score_text_view)
-        timerTextView = findViewById(R.id.timer_text_view)
-
-        nextButton = findViewById(R.id.next_button)
         nextButton.setOnClickListener {
-            calculateScore()
+            navigateToNextFragment()
         }
-
-        startQuizTimer()
     }
 
-    private fun startQuizTimer() {
-        countDownTimer = object : CountDownTimer(quizDuration, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val secondsRemaining = millisUntilFinished / 1000
-                timerTextView.text = "Time: $secondsRemaining s"
-            }
-
-            override fun onFinish() {
-                timerTextView.text = "Time's up!"
-                calculateScore()
-                nextButton.isEnabled = false
-            }
-        }.start()
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
     }
 
-    private fun calculateScore() {
-        val userAnswers = questionsAdapter.getUserAnswers()
-        val correctAnswers = viewModel.allQuestions.value?.associate { it.id to it.correctAnswer }
+    private fun setupRecyclerView() {
+        questionSelectorAdapter = QuestionSelectorAdapter(questions.size)
+        recyclerView.adapter = questionSelectorAdapter
+        recyclerView.layoutManager = GridLayoutManager(this, questions.size)
+    }
 
-        if (correctAnswers != null) {
-            val totalQuestions = correctAnswers.size
-            var correctCount = 0
-            userAnswers.forEach { (questionId, userAnswer) ->
-                if (correctAnswers[questionId] == userAnswer) {
-                    correctCount++
+    private fun observeData() {
+        viewModel.networkQuestions.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    progressBar.visibility = View.GONE
+                    resource.data?.let { questions ->
+                        this.questions = questions
+                        setupViewPager(questions)
+                        setupRecyclerView()
+                    } ?: run {
+                        Toast.makeText(this, "No questions available.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Resource.Error -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this, "Failed to load questions: ${resource.message}", Toast.LENGTH_LONG).show()
                 }
             }
-            val percentageScore = (correctCount.toDouble() / totalQuestions * 100).toInt()
-            title.text = "Score: $percentageScore%"
-        } else {
-            title.text = "No questions loaded!"
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        countDownTimer?.cancel()
+    private fun setupViewPager(questions: List<Question>) {
+        quizPagerAdapter = QuizPagerAdapter(this, questions)
+        viewPager.adapter = quizPagerAdapter
+    }
+
+    private fun navigateToPreviousFragment() {
+        if (currentPosition > 0) {
+            currentPosition--
+            viewPager.setCurrentItem(currentPosition, true)
+        }
+        updateNextButtonText()
+    }
+
+    private fun navigateToNextFragment() {
+        if (currentPosition < questions.size - 1) {
+            currentPosition++
+            viewPager.setCurrentItem(currentPosition, true)
+        }
+        updateNextButtonText()
+    }
+
+    private fun updateNextButtonText() {
+        if (currentPosition == questions.size - 1) {
+            nextButton.text = getString(R.string.submit_btn)
+        } else {
+            nextButton.text = getString(R.string.next_btn)
+        }
     }
 }

@@ -5,26 +5,29 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.codingquizzes.quizzes.data.local.DatabaseProvider
+import com.example.codingquizzes.quizzes.data.api.Resource
+import com.example.codingquizzes.quizzes.data.api.RetrofitInstance
 import com.example.codingquizzes.quizzes.data.model.Question
 import com.example.codingquizzes.quizzes.data.repository.QuestionRepository
 import kotlinx.coroutines.launch
 
-class QuestionViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: QuestionRepository
-    private val _allQuestions = MutableLiveData<List<Question>>()
-    val allQuestions: LiveData<List<Question>> = _allQuestions
+class QuestionViewModel(application: Application, questionRepository: QuestionRepository? = null): AndroidViewModel(application) {
+    constructor(application: Application) : this(application, null)
 
-    init {
-        val questionDao = DatabaseProvider.getDatabase(application).questionDao()
-        repository = QuestionRepository(questionDao)
-    }
+    private val _questionRepository: QuestionRepository = questionRepository ?: QuestionRepository(
+        RetrofitInstance.RetrofitInstance.questionApiService
+    )
 
-    fun getQuestions(quizId: Int, level: String) {
+    private val _networkQuestions = MutableLiveData<Resource<List<Question>>>()
+    val networkQuestions: LiveData<Resource<List<Question>>> = _networkQuestions
+
+    fun fetchQuestions(
+        difficulty: String,
+        tags: String? = null
+    ) {
         viewModelScope.launch {
-            val questions = repository.getAllQuestions(quizId, level)
-            questions.observeForever { questionList ->
-                _allQuestions.value = questionList
+            _questionRepository.getQuestions(difficulty, tags).collect { resource ->
+                _networkQuestions.value = resource
             }
         }
     }

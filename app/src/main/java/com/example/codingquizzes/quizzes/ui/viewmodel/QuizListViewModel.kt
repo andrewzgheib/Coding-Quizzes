@@ -12,6 +12,7 @@ import com.example.codingquizzes.quizzes.data.repository.QuizListRepository
 import kotlinx.coroutines.launch
 
 class QuizListViewModel(application: Application, quizListRepository: QuizListRepository? = null): AndroidViewModel(application) {
+    constructor(application: Application) : this(application, null)
 
     private val _quizListRepository: QuizListRepository = quizListRepository ?: QuizListRepository(
         RetrofitInstance.RetrofitInstance.quizApiService

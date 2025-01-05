@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
     private const val BASE_URL = "https://quizapi.io"
-    private const val API_KEY = "p4IuM0BMNybHmjIqfPfiDNTBfT9zAMG0RE6xURDk"
+    private const val API_KEY = "api_key"
     private const val API_KEY_HEADER = "X-Api-Key"
     object RetrofitInstance {
         private val gson: Gson = GsonBuilder()
@@ -32,5 +32,6 @@ object RetrofitInstance {
         }
 
         val quizApiService: QuizApiService = retrofit.create(QuizApiService::class.java)
+        val questionApiService: QuestionApiService = retrofit.create(QuestionApiService::class.java)
     }
 }

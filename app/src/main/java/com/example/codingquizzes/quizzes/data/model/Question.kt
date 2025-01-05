@@ -1,19 +1,89 @@
 package com.example.codingquizzes.quizzes.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "questions")
+@Parcelize
 data class Question(
-    @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    @ColumnInfo(name = "quiz_id") var quizId: Int,
-    @ColumnInfo(name = "question_type") var type: String,
-    @ColumnInfo(name = "level") var level: String,
-    @ColumnInfo(name = "question_text") var questionText: String,
-    @ColumnInfo(name = "question_format") var questionType: String,
-    @ColumnInfo(name = "first_option") var firstOption: String,
-    @ColumnInfo(name = "second_option") var secondOption: String,
-    @ColumnInfo(name = "third_option") var thirdOption: String,
-    @ColumnInfo(name = "correct_answer") var correctAnswer: String
-)
+    @SerializedName("id")
+    val id: Int,
+
+    @SerializedName("question")
+    val question: String,
+
+    @SerializedName("description")
+    val description: String?,
+
+    @SerializedName("answers")
+    val answers: Answers,
+
+    @SerializedName("multiple_correct_answers")
+    val multipleCorrectAnswers: String,
+
+    @SerializedName("correct_answers")
+    val correctAnswers: CorrectAnswers,
+
+    @SerializedName("explanation")
+    val explanation: String?,
+
+    @SerializedName("tip")
+    val tip: String?,
+
+    @SerializedName("tags")
+    val tags: List<Tag>,
+
+    @SerializedName("category")
+    val category: String,
+
+    @SerializedName("difficulty")
+    val difficulty: String
+) : Parcelable
+
+@Parcelize
+data class Answers(
+    @SerializedName("answer_a")
+    val answerA: String?,
+
+    @SerializedName("answer_b")
+    val answerB: String?,
+
+    @SerializedName("answer_c")
+    val answerC: String?,
+
+    @SerializedName("answer_d")
+    val answerD: String?,
+
+    @SerializedName("answer_e")
+    val answerE: String?,
+
+    @SerializedName("answer_f")
+    val answerF: String?
+) : Parcelable
+
+@Parcelize
+data class CorrectAnswers(
+    @SerializedName("answer_a_valid")
+    val answerAValid: String,
+
+    @SerializedName("answer_b_valid")
+    val answerBValid: String,
+
+    @SerializedName("answer_c_valid")
+    val answerCValid: String,
+
+    @SerializedName("answer_d_valid")
+    val answerDValid: String,
+
+    @SerializedName("answer_e_valid")
+    val answerEValid: String,
+
+    @SerializedName("answer_f_valid")
+    val answerFValid: String
+) : Parcelable
+
+@Parcelize
+data class Tag(
+    @SerializedName("name")
+    val name: String
+) : Parcelable

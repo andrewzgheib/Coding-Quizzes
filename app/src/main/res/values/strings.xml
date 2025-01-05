@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Coding Quizzes</string>
     <string name="start_quiz_btn">Start</string>
-    <string name="beginner_btn">Beginner</string>
-    <string name="intermediate_btn">Intermediate</string>
+    <string name="beginner_btn">Easy</string>
+    <string name="intermediate_btn">Medium</string>
+    <string name="advanced_btn">Hard</string>
     <string name="pick_your_difficulty">Pick Your Difficulty</string>
-    <string name="submit">Submit</string>
     <string name="error_message">failed to fetch data</string>
     <string name="frontend_section">FRONTEND</string>
     <string name="backend_section">BACKEND</string>
@@ -12,5 +12,7 @@
     <string name="cicd_section">CI/CD</string>
     <string name="languages_section">LANGUAGES</string>
     <string name="others_section">OTHERS</string>
-
+    <string name="previous_btn">Previous</string>
+    <string name="next_btn">Next</string>
+    <string name="submit_btn">Submit</string>
 </resources>
