@@ -8,6 +8,7 @@ data class User(
     @PrimaryKey
     val firebaseUid: String,
     var username: String,
+    var dateOfBirth: String?,
     var bio: String?,
     var profilePictureUri: String?
 )

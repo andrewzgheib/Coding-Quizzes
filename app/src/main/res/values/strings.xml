@@ -12,6 +12,7 @@
     <string name="stay_login_question">Stay logged in?</string>
     <string name="login_link"><u>Register</u></string>
     <string name="profile_username">Enter your username</string>
+    <string name="profile_dob">Enter your date of birth</string>
     <string name="profile_bio">Enter your bio</string>
     <string name="profile_pfp_btn">Change Picture</string>
     <string name="profile_save_btn">Save Changes</string>

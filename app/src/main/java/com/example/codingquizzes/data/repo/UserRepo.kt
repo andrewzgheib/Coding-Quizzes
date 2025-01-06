@@ -29,6 +29,7 @@ class UserRepo(
     suspend fun updateProfile(
         username: String,
         bio: String?,
+        dateOfBirth: String?,
         profilePictureUri: String? = null
     ) = withContext(Dispatchers.IO) {
         val uid = currentUser?.uid ?: throw IllegalStateException("No user logged in")
@@ -44,6 +45,7 @@ class UserRepo(
                 firebaseUid = uid,
                 username = username,
                 bio = bio,
+                dateOfBirth = dateOfBirth,
                 profilePictureUri = profilePictureUri
             )
 

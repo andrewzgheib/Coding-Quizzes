@@ -39,6 +39,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     fun updateProfile(
         username: String,
         bio: String?,
+        dateOfBirth: String?,
         profilePictureUri: String? = null
     ) {
         viewModelScope.launch {
@@ -47,6 +48,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 repository.updateProfile(
                     username = username,
                     bio = bio,
+                    dateOfBirth = dateOfBirth,
                     profilePictureUri = profilePictureUri
                 )
                 success_message.value = "Changes saved"

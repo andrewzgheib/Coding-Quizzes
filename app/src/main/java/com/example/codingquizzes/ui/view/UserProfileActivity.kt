@@ -1,6 +1,7 @@
 package com.example.codingquizzes.ui.view
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -27,6 +28,9 @@ import com.example.codingquizzes.R
 import com.example.codingquizzes.databinding.ActivityEditProfileBinding
 import com.example.codingquizzes.ui.vm.UserProfileViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -67,6 +71,16 @@ class UserProfileActivity : AppCompatActivity() {
         observeData()
         setupSaveButton()
         setupImagePicker()
+
+        binding.profileDob.setOnClickListener {
+            showDatePicker()
+        }
+
+        binding.profileDob.apply {
+            isFocusable = false
+            isFocusableInTouchMode = false
+        }
+
         observeProfilePicture()
         setupBackNavigation()
     }
@@ -84,6 +98,7 @@ class UserProfileActivity : AppCompatActivity() {
                     binding.apply {
                         profileUsername.setText(it.username)
                         profileBio.setText(it.bio)
+                        profileDob.setText(it.dateOfBirth)
                     }
                 }
             }
@@ -119,6 +134,7 @@ class UserProfileActivity : AppCompatActivity() {
 
             val username = binding.profileUsername.text.toString()
             val bio = binding.profileBio.text.toString()
+            val dob = binding.profileDob.text.toString()
 
             try {
                 selectedImageUri?.let { uri ->
@@ -127,12 +143,14 @@ class UserProfileActivity : AppCompatActivity() {
                         profileVM.updateProfile(
                             username = username,
                             bio = bio.takeIf { it.isNotBlank() },
+                            dateOfBirth = dob.takeIf { it.isNotBlank() },
                             profilePictureUri = imageUrl
                         )
                     }
                 } ?: profileVM.updateProfile(
                     username = username,
                     bio = bio.takeIf { it.isNotBlank() },
+                    dateOfBirth = dob.takeIf { it.isNotBlank() }
                 )
             } catch (e: Exception){
                 Log.e("UserProfileActivity.setupSaveButton()", "Error: ${e.message}")
@@ -257,6 +275,26 @@ class UserProfileActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, month, day ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, day)
+
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                binding.profileDob.setText(dateFormat.format(selectedDate.time))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
