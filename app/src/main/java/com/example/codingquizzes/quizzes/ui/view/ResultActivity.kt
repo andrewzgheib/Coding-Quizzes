@@ -50,6 +50,9 @@ class ResultActivity : AppCompatActivity() {
         }
 
         reviewAnswersButton.setOnClickListener {
+            val intent = Intent(this, ReviewAnswerActivity::class.java)
+            startActivity(intent)
+
         }
     }
 }

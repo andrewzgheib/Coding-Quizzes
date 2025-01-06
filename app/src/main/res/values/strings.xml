@@ -23,5 +23,6 @@
     <string name="question_correct">questions correct</string>
     <string name="score_percentage">%1$s</string>
     <string name="correct_answers">%1$d/%2$d</string>
+    <string name="explanation_txt">Explanation:</string>
 
 </resources>
