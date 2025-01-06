@@ -16,5 +16,11 @@
     <string name="profile_bio">Enter your bio</string>
     <string name="profile_pfp_btn">Change Picture</string>
     <string name="profile_save_btn">Save Changes</string>
-    <string name="ic_user_text">profile_icon</string>
+    <string name="ic_profile_text">profile_icon</string>
+    <string name="ic_code_text">code_icon</string>
+    <string name="code_btn">Run Code</string>
+    <string name="code_input">Input (optional)</string>
+    <string name="code_env">Enter your code here</string>
+    <string name="arrow">arrow</string>
+    <string name="code_output">Output will be shown here</string>
 </resources>
