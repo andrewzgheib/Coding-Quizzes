@@ -2,41 +2,33 @@ package com.example.codingquizzes.ui.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.codingquizzes.R
-import com.example.codingquizzes.ui.adapter.MainAdapter
+import com.example.codingquizzes.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), MainAdapter.ButtonClickListener {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var mainAdapter: MainAdapter
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var main_ic_edit: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        recyclerView = findViewById(R.id.rv)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        setSupportActionBar(binding.mainToolbar)
 
-        val buttonLabels = listOf(/*"Quizzes", */"Edit Profile")
+        main_ic_edit = findViewById(R.id.main_ic_edit)
 
-        mainAdapter = MainAdapter(buttonLabels, this)
-        recyclerView.adapter = mainAdapter
+        setupIcons()
     }
 
-    override fun onButtonClick(position: Int) {
-        when (position) {
-            0 -> navigateToActivity(UserProfileActivity::class.java)
-/*
-            1 -> navigateToActivity(QuizzesActivity::class.java)
-*/
+    private fun setupIcons() {
+        main_ic_edit.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            startActivity(intent)
         }
-    }
-
-    private fun navigateToActivity(activityClass: Class<*>) {
-        val intent = Intent(this, activityClass)
-        startActivity(intent)
     }
 }
