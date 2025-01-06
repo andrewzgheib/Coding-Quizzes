@@ -55,10 +55,17 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.fragment:fragment-ktx:1.8.5")
 
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    implementation(libs.kotlinx.coroutines.android)
+
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

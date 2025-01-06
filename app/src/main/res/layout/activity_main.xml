@@ -31,9 +31,25 @@
         android:src="@drawable/ic_edit"
         android:background="@color/fuchsia"
         android:elevation="4dp"
-        android:contentDescription="@string/ic_user_text"
+        android:contentDescription="@string/ic_profile_text"
         app:layout_constraintBottom_toBottomOf="@id/main_toolbar"
         app:layout_constraintEnd_toEndOf="@id/main_toolbar"
+        app:layout_constraintTop_toTopOf="@id/main_toolbar" />
+
+    <ImageButton
+        android:id="@+id/main_ic_code"
+        android:layout_width="48dp"
+        android:layout_height="50dp"
+        android:minWidth="48dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_terminal"
+        android:background="@color/fuchsia"
+        android:elevation="4dp"
+        android:contentDescription="@string/ic_code_text"
+        app:layout_constraintBottom_toBottomOf="@id/main_toolbar"
+        app:layout_constraintEnd_toStartOf="@id/main_ic_edit"
         app:layout_constraintTop_toTopOf="@id/main_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
