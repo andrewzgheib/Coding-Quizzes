@@ -38,6 +38,5 @@ class MainActivity : AppCompatActivity(), MainAdapter.ButtonClickListener {
     private fun navigateToActivity(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
         startActivity(intent)
-        finish()
     }
 }

@@ -1,64 +1,65 @@
 package com.example.codingquizzes.ui.vm
 
-import androidx.lifecycle.LiveData
+import android.app.Application
+import android.net.Uri
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.lifecycle.viewModelScope
+import com.example.codingquizzes.data.entities.User
+import com.example.codingquizzes.data.local.AppDatabase
+import com.example.codingquizzes.data.repo.UserRepo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class UserProfileViewModel : ViewModel() {
+class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: UserRepo
 
-    private val db = FirebaseFirestore.getInstance()
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    val currentUser: StateFlow<User?>
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _name = MutableLiveData<String>()
-    val name: LiveData<String> get() = _name
+    val error_message = MutableLiveData<String>()
+    val success_message = MutableLiveData<String>()
 
-    private val _username = MutableLiveData<String>()
-    val username: LiveData<String> get() = _username
+    init {
+        val database = AppDatabase.getDatabase(application)
+        repository = UserRepo(
+            database.userDao(),
+            application.applicationContext
+        )
+        currentUser = repository.getCurrentUserFlow()
+            .stateIn(viewModelScope, SharingStarted.Lazily, null)
+    }
 
-    val profile_message = MutableLiveData<String>()
-
-    fun saveProfileToFirebase() {
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val user = hashMapOf(
-                "name" to _name.value.orEmpty(),
-                "username" to _username.value.orEmpty()
-            )
-
-            db.collection("users").document(currentUser.uid)
-                .set(user)
-                .addOnSuccessListener {
-                    if (_name.value != null && _username.value != null) {
-                        profile_message.value = "Profile Updated"
-                    }
-
-                }
-                .addOnFailureListener { e ->
-                    profile_message.value = "Error Saving Profile: ${e.message}"
-                }
-        } else {
-            profile_message.value = "User not authenticated"
+    fun updateProfile(
+        username: String,
+        bio: String?,
+        profilePictureUri: String? = null
+    ) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                repository.updateProfile(
+                    username = username,
+                    bio = bio,
+                    profilePictureUri = profilePictureUri
+                )
+                success_message.value = "Changes saved"
+            } catch (e: Exception) {
+                error_message.value = "Error saving info"
+                Log.e("UserProfileViewModel.updateProfile()", "Error: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
-    fun fetchUserProfiles() {
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            db.collection("users").document(currentUser.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
-                        _name.value = document.getString("name").orEmpty()
-                        _username.value = document.getString("username").orEmpty()
-                    } else {
-                        profile_message.value = "No Profile Found"
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    profile_message.value = "Error Fetching Profile: ${exception.message}"
-                }
-        }
+    suspend fun uploadProfilePicture(uri: Uri): String {
+        return repository.saveProfilePictureLocally(uri)
     }
 }
