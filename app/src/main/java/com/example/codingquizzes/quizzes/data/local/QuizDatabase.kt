@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.codingquizzes.quizzes.data.model.UserAnswer
 
-@Database(entities = [UserAnswer::class], version = 10, exportSchema = false)
+@Database(entities = [UserAnswer::class], version = 12, exportSchema = false)
 abstract class QuizDatabase : RoomDatabase() {
     abstract fun userAnswerDao(): UserAnswerDao
 
@@ -21,7 +21,6 @@ abstract class QuizDatabase : RoomDatabase() {
                     QuizDatabase::class.java,
                     "quiz_database"
                 )
-                    // Use destructive migration if there's an issue with the table
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

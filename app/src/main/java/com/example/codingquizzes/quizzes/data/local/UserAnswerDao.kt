@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.codingquizzes.quizzes.data.model.UserAnswer
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +14,7 @@ interface UserAnswerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserAnswer(userAnswer: UserAnswer)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateUserAnswer(userAnswer: UserAnswer)
 
     @Query("SELECT * FROM user_answer WHERE question_id = :questionId LIMIT 1")

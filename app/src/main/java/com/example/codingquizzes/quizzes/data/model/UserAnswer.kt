@@ -6,10 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_answer")
 data class UserAnswer(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    @ColumnInfo(name = "question_id")
-    val questionId: Int,
-    @ColumnInfo(name = "selected_answer")
-    val selectedAnswer: String
+    @ColumnInfo("question_id")
+    @PrimaryKey val questionId: Int,
+    @ColumnInfo("selected_answer")
+    val selectedAnswer: String?
 )

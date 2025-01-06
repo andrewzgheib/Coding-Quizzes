@@ -23,6 +23,7 @@ import com.example.codingquizzes.quizzes.ui.adapter.QuestionSelectorAdapter
 import com.example.codingquizzes.quizzes.ui.adapter.QuizPagerAdapter
 import com.example.codingquizzes.quizzes.ui.viewmodel.QuestionViewModel
 import com.example.codingquizzes.quizzes.ui.viewmodel.UserAnswerViewModel
+import com.google.gson.Gson
 import java.util.Locale
 
 class QuizActivity : AppCompatActivity() {
@@ -45,6 +46,7 @@ class QuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
+        deleteSavedUserAnswer()
 
         viewPager = findViewById(R.id.view_pager)
         progressBar = findViewById(R.id.progress_bar_question)
@@ -76,7 +78,10 @@ class QuizActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun deleteSavedUserAnswer() {
+        val userAnswerViewModel = ViewModelProvider(this)[UserAnswerViewModel::class.java]
+        userAnswerViewModel.deleteAllUserAnswers()
+    }
     private fun setupViewModels() {
         questionViewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
         userAnswerViewModel = ViewModelProvider(this)[UserAnswerViewModel::class.java]
@@ -98,6 +103,7 @@ class QuizActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     resource.data?.let { questions ->
                         this.questions = questions
+                        saveQuestions(questions)
                         setupViewPager(questions)
                         setupRecyclerView()
                         totalQuizTime = questions.size * 30000L
@@ -252,6 +258,14 @@ class QuizActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun saveQuestions(questions: List<Question>) {
+        val sharedPrefs = getSharedPreferences("quiz_prefs", MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
+        val json = Gson().toJson(questions)
+        editor.putString("questions", json)
+        editor.apply()
     }
 
 }

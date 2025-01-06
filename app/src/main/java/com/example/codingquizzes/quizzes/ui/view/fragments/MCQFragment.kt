@@ -81,10 +81,17 @@ class MCQFragment : Fragment() {
                     questionId = question.id,
                     selectedAnswer = selectedOption
                 )
-                userAnswerViewModel.insertUserAnswer(userAnswer)
+                userAnswerViewModel.insertOrUpdateUserAnswer(userAnswer)
+            } else {
+                val userAnswer = UserAnswer(
+                    questionId = question.id,
+                    selectedAnswer = null
+                )
+                userAnswerViewModel.insertOrUpdateUserAnswer(userAnswer)
             }
         }
     }
+
 
     companion object {
         fun newInstance(question: Question): MCQFragment {

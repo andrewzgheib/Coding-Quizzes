@@ -18,6 +18,15 @@ class UserAnswerRepository(
         }
     }.flowOn(Dispatchers.IO)
 
+    suspend fun updateUserAnswer(userAnswer: UserAnswer): Resource<Unit> {
+        return try {
+            userAnswerDao.updateUserAnswer(userAnswer)
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error("Failed to update user answer: ${e.message}")
+        }
+    }
+
     suspend fun getUserAnswerForQuestion(questionId: Int): Resource<UserAnswer?> {
         return try {
             val answer = userAnswerDao.getUserAnswerForQuestion(questionId)

@@ -32,19 +32,15 @@ class UserAnswerViewModel(application: Application, userAnswerRepository: UserAn
         }
     }
 
-    fun insertUserAnswer(userAnswer: UserAnswer) {
+    fun insertOrUpdateUserAnswer(userAnswer: UserAnswer) {
         viewModelScope.launch {
-            _userAnswerRepository.insertUserAnswer(userAnswer)
+            val existingAnswer = _userAnswerRepository.getUserAnswerForQuestion(userAnswer.questionId)
+            if (existingAnswer.data != null) {
+                _userAnswerRepository.updateUserAnswer(userAnswer)
+            } else {
+                _userAnswerRepository.insertUserAnswer(userAnswer)
+            }
         }
-    }
-
-    fun getUserAnswerForQuestion(questionId: Int): LiveData<Resource<UserAnswer?>> {
-        val liveData = MutableLiveData<Resource<UserAnswer?>>()
-        viewModelScope.launch {
-            val resource = _userAnswerRepository.getUserAnswerForQuestion(questionId)
-            liveData.postValue(resource)
-        }
-        return liveData
     }
 
     fun deleteAllUserAnswers() {
@@ -52,4 +48,5 @@ class UserAnswerViewModel(application: Application, userAnswerRepository: UserAn
             _userAnswerRepository.deleteAllUserAnswers()
         }
     }
+
 }
