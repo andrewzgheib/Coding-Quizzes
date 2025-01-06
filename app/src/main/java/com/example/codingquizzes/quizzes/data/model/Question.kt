@@ -63,22 +63,22 @@ data class Answers(
 
 @Parcelize
 data class CorrectAnswers(
-    @SerializedName("answer_a_valid")
+    @SerializedName("answer_a_correct")
     val answerAValid: String,
 
-    @SerializedName("answer_b_valid")
+    @SerializedName("answer_b_correct")
     val answerBValid: String,
 
-    @SerializedName("answer_c_valid")
+    @SerializedName("answer_c_correct")
     val answerCValid: String,
 
-    @SerializedName("answer_d_valid")
+    @SerializedName("answer_d_correct")
     val answerDValid: String,
 
-    @SerializedName("answer_e_valid")
+    @SerializedName("answer_e_correct")
     val answerEValid: String,
 
-    @SerializedName("answer_f_valid")
+    @SerializedName("answer_f_correct")
     val answerFValid: String
 ) : Parcelable
 

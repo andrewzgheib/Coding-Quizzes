@@ -40,4 +40,5 @@ class QuestionSelectorAdapter(
     }
 
     override fun getItemCount(): Int = questionCount
+
 }

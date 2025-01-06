@@ -21,6 +21,9 @@
             android:exported="false"
             android:theme="@style/DialogTheme" />
         <activity
+            android:name=".quizzes.ui.view.ResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".quizzes.ui.view.MainActivity"
             android:exported="true">
             <intent-filter>

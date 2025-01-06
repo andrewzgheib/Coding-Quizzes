@@ -1,11 +1,17 @@
 package com.example.codingquizzes.quizzes.ui.view
 
+import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,19 +22,25 @@ import com.example.codingquizzes.quizzes.data.model.Question
 import com.example.codingquizzes.quizzes.ui.adapter.QuestionSelectorAdapter
 import com.example.codingquizzes.quizzes.ui.adapter.QuizPagerAdapter
 import com.example.codingquizzes.quizzes.ui.viewmodel.QuestionViewModel
+import com.example.codingquizzes.quizzes.ui.viewmodel.UserAnswerViewModel
+import java.util.Locale
 
 class QuizActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var progressBar: ProgressBar
-    private lateinit var viewModel: QuestionViewModel
+    private lateinit var questionViewModel: QuestionViewModel
+    private lateinit var userAnswerViewModel: UserAnswerViewModel
     private lateinit var quizPagerAdapter: QuizPagerAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var questionSelectorAdapter: QuestionSelectorAdapter
     private lateinit var previousButton: Button
     private lateinit var nextButton: Button
+    private lateinit var timeTextView: TextView
     private var currentPosition = 0
     private var questions: List<Question> = listOf()
+    private var totalQuizTime: Long = 0
+    private var quizTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,28 +51,35 @@ class QuizActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.question_selector_recycler_view)
         previousButton = findViewById(R.id.previous_btn_question)
         nextButton = findViewById(R.id.next_btn_question)
+        timeTextView = findViewById(R.id.timeTextView)
 
         viewPager.isUserInputEnabled = false
 
         val quizCategory = intent.getStringExtra("QUIZ_CATEGORY") ?: "General Knowledge"
         val difficultyLevel = intent.getStringExtra("DIFFICULTY_LEVEL") ?: "easy"
 
-        setupViewModel()
+        setupViewModels()
         observeData()
 
-        viewModel.fetchQuestions(difficultyLevel.lowercase(), quizCategory)
+        questionViewModel.fetchQuestions(difficultyLevel.lowercase(), quizCategory)
 
         previousButton.setOnClickListener {
             navigateToPreviousFragment()
         }
 
         nextButton.setOnClickListener {
-            navigateToNextFragment()
+            if (currentPosition == questions.size - 1) {
+                stopTimer()
+                calculateScore()
+            } else {
+                navigateToNextFragment()
+            }
         }
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
+    private fun setupViewModels() {
+        questionViewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
+        userAnswerViewModel = ViewModelProvider(this)[UserAnswerViewModel::class.java]
     }
 
     private fun setupRecyclerView() {
@@ -70,7 +89,7 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.networkQuestions.observe(this) { resource ->
+        questionViewModel.networkQuestions.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     progressBar.visibility = View.VISIBLE
@@ -81,6 +100,12 @@ class QuizActivity : AppCompatActivity() {
                         this.questions = questions
                         setupViewPager(questions)
                         setupRecyclerView()
+                        totalQuizTime = questions.size * 30000L
+                        startQuizTimer()
+                        if (questions.size == 1) {
+                            nextButton.text = getString(R.string.submit_btn)
+                        }
+
                     } ?: run {
                         Toast.makeText(this, "No questions available.", Toast.LENGTH_SHORT).show()
                     }
@@ -111,6 +136,7 @@ class QuizActivity : AppCompatActivity() {
             currentPosition++
             viewPager.setCurrentItem(currentPosition, true)
         }
+
         updateNextButtonText()
     }
 
@@ -121,4 +147,111 @@ class QuizActivity : AppCompatActivity() {
             nextButton.text = getString(R.string.next_btn)
         }
     }
+
+    private fun startQuizTimer() {
+        quizTimer = object : CountDownTimer(totalQuizTime, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutesRemaining = (millisUntilFinished / 1000) / 60
+                val secondsRemaining = (millisUntilFinished / 1000) % 60
+
+                val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", minutesRemaining, secondsRemaining)
+
+                val timeText = getString(R.string.time_left_format, formattedTime)
+
+                timeTextView.text = timeText
+
+                if (millisUntilFinished in 1..10000) {
+                    val cardView = findViewById<CardView>(R.id.time_card)
+                    cardView.backgroundTintList = ContextCompat.getColorStateList(this@QuizActivity, R.color.red)
+                }
+
+                if (millisUntilFinished in 9000..10000) {
+                    playSound()
+
+                }
+
+            }
+
+            override fun onFinish() {
+                Toast.makeText(this@QuizActivity, "Quiz finished!", Toast.LENGTH_SHORT).show()
+                stopTimer()
+                calculateScore()
+            }
+        }
+
+        quizTimer?.start()
+    }
+
+    private fun playSound() {
+        val mediaPlayer = MediaPlayer.create(this, R.raw.beepbeepbeep)
+        mediaPlayer.start()
+
+        mediaPlayer.setOnCompletionListener {
+            mediaPlayer.release()
+        }
+    }
+
+    private fun stopTimer() {
+        quizTimer?.cancel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTimer()
+    }
+
+    private fun calculateScore() {
+        userAnswerViewModel.fetchAllUserAnswers()
+        userAnswerViewModel.allUserAnswers.observe(this@QuizActivity) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    val userAnswers = resource.data
+                    if (userAnswers.isNullOrEmpty()) {
+                        Toast.makeText(this@QuizActivity, "No answers provided.", Toast.LENGTH_SHORT).show()
+                        return@observe
+                    }
+
+                    var score = 0
+                    var correctAnswers = 0
+
+                    questions.forEach { question ->
+                        val userAnswer = userAnswers.find { it.questionId == question.id }
+                        if (userAnswer != null) {
+                            val isCorrect = when (userAnswer.selectedAnswer) {
+                                question.answers.answerA -> question.correctAnswers.answerAValid == "true"
+                                question.answers.answerB -> question.correctAnswers.answerBValid == "true"
+                                question.answers.answerC -> question.correctAnswers.answerCValid == "true"
+                                question.answers.answerD -> question.correctAnswers.answerDValid == "true"
+                                else -> false
+                            }
+                            if (isCorrect) {
+                                score++
+                                correctAnswers++
+                            }
+                        }
+                    }
+
+                    val diff = questions[0].difficulty
+                    val category = questions[0].tags[0].name
+
+                    val intent = Intent(this, ResultActivity::class.java).apply {
+                        putExtra("EXTRA_SCORE", score)
+                        putExtra("EXTRA_TOTAL_QUESTIONS", questions.size)
+                        putExtra("QUIZ_CATEGORY", category)
+                        putExtra("DIFFICULTY_LEVEL", diff)
+
+                    }
+                    startActivity(intent)
+                    finish()
+                }
+                is Resource.Error -> {
+                    Toast.makeText(this@QuizActivity, "Failed to load answers", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
 }

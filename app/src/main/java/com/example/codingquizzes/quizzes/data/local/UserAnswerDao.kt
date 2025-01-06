@@ -1,25 +1,27 @@
 package com.example.codingquizzes.quizzes.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.example.codingquizzes.quizzes.data.model.UserAnswer
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserAnswerDao {
 
-    @Query("SELECT * FROM user_answers")
-    fun getUserAnswers(): LiveData<List<UserAnswer>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUserAnswer(userAnswer: UserAnswer)
 
-    @Insert
-    suspend fun insert(userAnswer: UserAnswer)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateUserAnswer(userAnswer: UserAnswer)
 
-    @Query("SELECT * FROM user_answers WHERE question_id = :questionId")
-    suspend fun getAnswerForQuestion(questionId: Int): UserAnswer
+    @Query("SELECT * FROM user_answer WHERE question_id = :questionId LIMIT 1")
+    suspend fun getUserAnswerForQuestion(questionId: Int): UserAnswer?
 
-    @Update
-    suspend fun update(userAnswer: UserAnswer)
+    @Query("SELECT * FROM user_answer")
+    fun getAllUserAnswers(): Flow<List<UserAnswer>>
+
+    @Query("DELETE FROM user_answer")
+    suspend fun deleteAllUserAnswers()
 }
-
