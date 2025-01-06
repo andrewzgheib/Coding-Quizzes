@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.codingquizzes.R
-import com.example.codingquizzes.ui.SaveSharedPreference
+import com.example.codingquizzes.data.SaveSharedPreference
 import com.example.codingquizzes.ui.view.MainActivity
 import com.example.codingquizzes.ui.vm.RegistrationViewModel
 

@@ -1,4 +1,4 @@
-package com.example.codingquizzes.ui
+package com.example.codingquizzes.data
 
 import android.content.Context
 import android.content.SharedPreferences
