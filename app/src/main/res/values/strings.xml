@@ -16,4 +16,5 @@
     <string name="profile_bio">Enter your bio</string>
     <string name="profile_pfp_btn">Change Picture</string>
     <string name="profile_save_btn">Save Changes</string>
+    <string name="ic_user_text">profile_icon</string>
 </resources>
