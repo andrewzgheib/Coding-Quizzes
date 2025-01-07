@@ -1,17 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/purple"
-    tools:context=".quizzes.ui.view.MainActivity">
+    android:background="@color/purple">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/fuchsia"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Edit Button -->
+        <ImageButton
+            android:id="@+id/main_ic_edit"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:minWidth="48dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_edit"
+            android:background="@color/fuchsia"
+            android:elevation="4dp"
+            android:contentDescription="@string/ic_profile_text"
+            app:layout_constraintBottom_toBottomOf="@id/main_toolbar"
+            app:layout_constraintEnd_toEndOf="@id/main_toolbar"
+            app:layout_constraintTop_toTopOf="@id/main_toolbar" />
+
+        <!-- Code Button -->
+        <ImageButton
+            android:id="@+id/main_ic_code"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:minWidth="48dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_terminal"
+            android:background="@color/fuchsia"
+            android:elevation="4dp"
+            android:contentDescription="@string/ic_code_text"
+            app:layout_constraintBottom_toBottomOf="@id/main_toolbar"
+            app:layout_constraintEnd_toStartOf="@id/main_ic_edit"
+            app:layout_constraintTop_toTopOf="@id/main_toolbar" />
 
         <!-- Progress Bar -->
         <ProgressBar
@@ -31,14 +75,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:textStyle="bold"
             android:text="@string/frontend_section"
             android:textColor="@android:color/white"
             android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
         <View
             android:id="@+id/divider_section_1"
@@ -223,6 +267,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_section_6" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
