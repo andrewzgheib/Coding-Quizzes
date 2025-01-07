@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:ignore="SelectedPhotoAccess" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,21 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodingQuizzes"
         tools:targetApi="31">
+
         <activity
-            android:name=".quizzes.ui.view.QuizActivity"
-            android:exported="false" />
-        <activity
-            android:name=".quizzes.ui.view.DifficultyLevelActivity"
-            android:exported="false"
-            android:theme="@style/DialogTheme" />
-        <activity
-            android:name=".quizzes.ui.view.ResultActivity"
-            android:exported="false" />
-        <activity
-        android:name=".quizzes.ui.view.ReviewAnswerActivity"
-        android:exported="false" />
-        <activity
-            android:name=".quizzes.ui.view.MainActivity"
+            android:name=".ui.view.auth.RegistrationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +35,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.view.auth.LoginActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.view.MainActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.view.UserProfileActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.view.QuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.DifficultyLevelActivity"
+            android:exported="false"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".ui.view.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.ReviewAnswerActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.view.CodeActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
