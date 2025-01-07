@@ -49,6 +49,20 @@
             android:exported="true" />
 
         <activity
+            android:name=".ui.view.QuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.DifficultyLevelActivity"
+            android:exported="false"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".ui.view.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.ReviewAnswerActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.view.CodeActivity"
             android:exported="true" />
 
