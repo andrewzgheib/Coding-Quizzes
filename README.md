@@ -32,7 +32,7 @@ cd coding-quizzes
     </td>
     <td>
       <h3>Login Activity</h3>
-      <img src="assets/Login%Activity.jpg" width="300"/>
+      <img src="assets/Login%20Activity.jpg" width="300"/>
     </td>
     <td>
       <h3>Main Activity</h3>
@@ -48,7 +48,7 @@ cd coding-quizzes
     </td>
     <td>
       <h3>Difficulty Picker</h3>
-      <img src="assets/Diffculty%20Picker" width="300"/>
+      <img src="assets/Difficulty%20Picker" width="300"/>
     </td>
     <td>
       <h3>Score Activity</h3>
