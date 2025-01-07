@@ -1,5 +1,31 @@
 <resources>
     <string name="app_name">Coding Quizzes</string>
+
+     <string name="app_name">Coding Quizzes</string>
+    <string name="reg_title">Welcome\!</string>
+    <string name="login_title">Welcome back\!</string>
+    <string name="email">Enter your email</string>
+    <string name="password">Enter your password</string>
+    <string name="reg_btn">Register</string>
+    <string name="login_btn">Log In</string>
+    <string name="reg_question">Already have an account?</string>
+    <string name="reg_link"><u>Log in</u></string>
+    <string name="login_question">Don\'t Have an Account?</string>
+    <string name="stay_login_question">Stay logged in?</string>
+    <string name="login_link"><u>Register</u></string>
+    <string name="profile_username">Enter your username</string>
+    <string name="profile_dob">Enter your date of birth</string>
+    <string name="profile_bio">Enter your bio</string>
+    <string name="profile_pfp_btn">Change Picture</string>
+    <string name="profile_save_btn">Save Changes</string>
+    <string name="ic_profile_text">profile_icon</string>
+    <string name="ic_code_text">code_icon</string>
+    <string name="code_btn">Run Code</string>
+    <string name="code_input">Input (optional)</string>
+    <string name="code_env">Enter your code here</string>
+    <string name="arrow">arrow</string>
+    <string name="code_output">Output will be shown here</string>
+
     <string name="start_quiz_btn">Start</string>
     <string name="beginner_btn">Easy</string>
     <string name="intermediate_btn">Medium</string>
