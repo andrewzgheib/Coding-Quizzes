@@ -48,7 +48,7 @@ cd coding-quizzes
     </td>
     <td>
       <h3>Difficulty Picker</h3>
-      <img src="assets/Difficulty%20Picker" width="300"/>
+      <img src="assets/Difficulty%20Picker.jpg" width="300"/>
     </td>
     <td>
       <h3>Score Activity</h3>
