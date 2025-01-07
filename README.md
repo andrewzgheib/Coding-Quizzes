@@ -34,20 +34,20 @@ cd coding-quizzes
 <h3>Main Activity</h3>
 <img src="assets/Main%20Activity.jpg" width="350"/>
 
-<h3>User Profile Activity</h3>
-<img src="assets/User%20Profile%20Activity.jpg" width="350"/>
+<h3>Difficulty Picker</h3>
+<img src="assets/Difficulty%20Picker.jpg" width="350"/>
 
 <h3>Question Activity</h3>
 <img src="assets/Question%20Activity.jpg" width="350"/>
-
-<h3>Difficulty Picker</h3>
-<img src="assets/Difficulty%20Picker.jpg" width="350"/>
 
 <h3>Score Activity</h3>
 <img src="assets/Score%20Activity.jpg" width="350"/>
 
 <h3>Review Activity</h3>
 <img src="assets/Review%20Activity.jpg" width="350"/>
+
+<h3>User Profile Activity</h3>
+<img src="assets/User%20Profile%20Activity.jpg" width="350"/>
 
 <h3>Code Execution Activity</h3>
 <img src="assets/Code%20Execution%20Activity.jpg" width="350"/>
