@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Coding Quizzes</string>
+
     <string name="reg_title">Welcome\!</string>
     <string name="login_title">Welcome back\!</string>
     <string name="email">Enter your email</string>
@@ -23,4 +24,30 @@
     <string name="code_env">Enter your code here</string>
     <string name="arrow">arrow</string>
     <string name="code_output">Output will be shown here</string>
+
+    <string name="start_quiz_btn">Start</string>
+    <string name="beginner_btn">Easy</string>
+    <string name="intermediate_btn">Medium</string>
+    <string name="advanced_btn">Hard</string>
+    <string name="pick_your_difficulty">Pick Your Difficulty</string>
+    <string name="error_message">failed to fetch data</string>
+    <string name="frontend_section">FRONTEND</string>
+    <string name="backend_section">BACKEND</string>
+    <string name="sql_section">SQL</string>
+    <string name="cicd_section">CI/CD</string>
+    <string name="languages_section">LANGUAGES</string>
+    <string name="others_section">OTHERS</string>
+    <string name="previous_btn">Previous</string>
+    <string name="next_btn">Next</string>
+    <string name="submit_btn">Submit</string>
+    <string name="time_left_format">Time left: %1$s</string>
+    <string name="retake_quiz_btn">Retry</string>
+    <string name="review_answers_btn">Review</string>
+    <string name="home_btn">Home</string>
+    <string name="your_score">Your score</string>
+    <string name="question_correct">questions correct</string>
+    <string name="score_percentage">%1$s</string>
+    <string name="correct_answers">%1$d/%2$d</string>
+    <string name="explanation_txt">Explanation:</string>
+
 </resources>
